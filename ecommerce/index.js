@@ -6,6 +6,7 @@ const productsApiRouter = require("./routes/api/products");
 
 const app = express();
 
+app.use(express.json());
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.set("views", path.join(__dirname, "views"));
