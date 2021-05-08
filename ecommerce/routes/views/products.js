@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/", async function (req, res, next) {
   const { tags } = req.query;
   try {
-    const products = productService.getProducts({ tags });
+    const products = await productService.getProducts({ tags });
     res.render("products", { products });
   } catch (e) {
     next(e);
