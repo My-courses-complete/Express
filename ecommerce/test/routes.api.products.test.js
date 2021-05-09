@@ -33,7 +33,7 @@ describe("routes - api - products", function () {
 
     it("should respond with the list of product", function (done) {
       request.get("/api/products").end((err, res) => {
-        assert.deepEqual(res.body, {
+        assert.deepStrictEqual(res.body, {
           data: productsMock,
           message: "products listed",
         });
