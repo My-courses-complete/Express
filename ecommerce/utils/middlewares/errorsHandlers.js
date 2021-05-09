@@ -1,5 +1,6 @@
 const Sentry = require("@sentry/node");
 const boom = require("@hapi/boom");
+
 const isRequestAjaxOrApi = require("../isRequestAjaxOrApi");
 
 function withErrorStack(err, stack) {
@@ -37,6 +38,7 @@ function clientErrorHandler(err, req, res, next) {
   const {
     output: { statusCode, payload },
   } = err;
+
   // catch errors for AJAX request and errors while streaming
   if (isRequestAjaxOrApi(req) || res.headersSent) {
     res.status(statusCode).json(withErrorStack(payload, err.stack));
@@ -46,6 +48,7 @@ function clientErrorHandler(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
+  console.log(err);
   const {
     output: { statusCode, payload },
   } = err;
