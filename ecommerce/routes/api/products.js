@@ -1,6 +1,13 @@
 const express = require("express");
 
 const ProductsService = require("../../services/products");
+const validation = require("../../utils/middlewares/validationHandler");
+const {
+  productIdSchema,
+  productTagSchema,
+  createProductSchema,
+  updateProductSchema,
+} = require("../../utils/schema/product");
 
 const productService = new ProductsService();
 const router = express.Router();
@@ -31,36 +38,45 @@ router.get("/:productId", async function (req, res, next) {
   } catch (e) {}
 });
 
-router.post("/", async function (req, res, next) {
-  const { body: product } = req;
-  try {
-    const createProduct = await productService.createdProduct({ product });
+router.post(
+  "/",
+  validation(createProductSchema),
+  async function (req, res, next) {
+    const { body: product } = req;
+    try {
+      const createProduct = await productService.createdProduct({ product });
 
-    res.status(201).json({
-      data: createProduct,
-      message: "products created",
-    });
-  } catch (e) {
-    next(e);
+      res.status(201).json({
+        data: createProduct,
+        message: "products created",
+      });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
-router.put("/:productId", async function (req, res, next) {
-  const { productId } = req.params;
-  const { body: product } = req;
-  try {
-    const updateProduct = await productService.updateProduct({
-      productId,
-      product,
-    });
-    res.status(200).json({
-      data: updateProduct,
-      message: "products updated",
-    });
-  } catch (e) {
-    next(e);
+router.put(
+  "/:productId",
+  validation({ productId: productIdSchema }, "params"),
+  validation(updateProductSchema),
+  async function (req, res, next) {
+    const { productId } = req.params;
+    const { body: product } = req;
+    try {
+      const updateProduct = await productService.updateProduct({
+        productId,
+        product,
+      });
+      res.status(200).json({
+        data: updateProduct,
+        message: "products updated",
+      });
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 router.delete("/:productId", async function (req, res, next) {
   const { productId } = req.params;
