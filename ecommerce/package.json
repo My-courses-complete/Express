@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index -e js,pug",
+    "dev:inspect": "nodemon --inspect index",
+    "dev:debug": "DEBUG=express:*,app:* npm run dev",
+    "debug":"DEBUG=express:*,app:* npm run start",
     "test": "mocha --exit",
     "test:cover": "nyc npm run test"
   },
@@ -17,6 +20,7 @@
     "@sentry/node": "^6.3.5",
     "@sentry/tracing": "^6.3.5",
     "bcrypt": "^5.0.1",
+    "debug": "^2.6.9",
     "dotenv": "^9.0.0",
     "express": "^4.17.1",
     "joi": "^17.4.0",

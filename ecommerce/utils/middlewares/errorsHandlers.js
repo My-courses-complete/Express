@@ -1,5 +1,6 @@
 const Sentry = require("@sentry/node");
 const boom = require("@hapi/boom");
+const debug = require("debug")("app:error");
 
 const isRequestAjaxOrApi = require("../isRequestAjaxOrApi");
 
@@ -14,15 +15,12 @@ const config = require("../../config/index");
 Sentry.init({
   dsn: `https://${config.sentryDns}/${config.sentryId}`,
 
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
 
 function logErrors(err, req, res, next) {
   Sentry.captureException(err);
-  console.log(err.stack);
+  debug(err.stack);
   next(err);
 }
 
@@ -48,7 +46,6 @@ function clientErrorHandler(err, req, res, next) {
 }
 
 function errorHandler(err, req, res, next) {
-  console.log(err);
   const {
     output: { statusCode, payload },
   } = err;

@@ -1,4 +1,5 @@
 const { MongoClient, ObjectID } = require("mongodb");
+const debug = require("debug")("app:mongo");
 const config = require("../config/index");
 
 const USER = encodeURIComponent(config.dbUser);
@@ -16,28 +17,17 @@ class MongoLib {
     this.dbName = DB_NAME;
   }
 
-  // connect() {
-  //   return new Promise((resolve, reject) => {
-  //     this.client.connect((error) => {
-  //       if (error) return reject(error);
-
-  //       console.log("Connected succesfully to mongo");
-  //       resolve(this.client.db(this.dbName));
-  //     });
-  //   });
-  // }
-
   async connect() {
     if (!MongoLib.connection) {
       try {
-        await this.client.connect()
-        console.log('Connected successfully to mongo')
-        MongoLib.connection = this.client.db(this.dbName)
+        await this.client.connect();
+        debug("Connected successfully to mongo");
+        MongoLib.connection = this.client.db(this.dbName);
       } catch (error) {
-        console.log(error)
-      } 
+        debug(error);
+      }
     }
-    return MongoLib.connection
+    return MongoLib.connection;
   }
 
   getAll(collection, query) {
