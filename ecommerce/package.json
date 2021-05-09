@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/boom": "^9.1.2",
     "@sentry/node": "^6.3.5",
     "@sentry/tracing": "^6.3.5",
     "dotenv": "^9.0.0",
