@@ -3,6 +3,7 @@ const path = require("path");
 const boom = require("@hapi/boom");
 const debug = require("debug")("app:server");
 const helmet = require("helmet");
+const cors = require("cors");
 
 const productsRouter = require("./routes/views/products");
 const productsApiRouter = require("./routes/api/products");
@@ -19,7 +20,8 @@ const {
 const app = express();
 
 // middlewares
-app.use(helmet())
+app.use(cors());
+app.use(helmet());
 app.use(express.json());
 
 // static files
