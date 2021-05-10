@@ -3,6 +3,11 @@ const passport = require("passport");
 
 const ProductsService = require("../../services/products");
 const validation = require("../../utils/middlewares/validationHandler");
+const cacheResponse = require("../../utils/cacheResponse");
+const {
+  FIVE_MINUTES_IN_SECONDS,
+  SIXTY_MINUTES_IN_SECONDS,
+} = require("../../utils/time");
 const {
   productIdSchema,
   productTagSchema,
@@ -20,6 +25,7 @@ function productsApi(app) {
   app.use("/api/products", router);
 
   router.get("/", async function (req, res, next) {
+    cacheResponse(res, FIVE_MINUTES_IN_SECONDS);
     const { tags } = req.query;
     try {
       const getProducts = await productService.getProducts({ tags });
@@ -34,6 +40,7 @@ function productsApi(app) {
   });
 
   router.get("/:productId", async function (req, res, next) {
+    cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
     const { productId } = req.params;
     try {
       const getProduct = await productService.getProduct({ productId });
