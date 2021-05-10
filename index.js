@@ -9,6 +9,7 @@ const productsRouter = require("./routes/views/products");
 const productsApiRouter = require("./routes/api/products");
 const authApiRouter = require("./routes/api/auth");
 const isRequestAjaxOrApi = require("./utils/isRequestAjaxOrApi");
+const config = require("./config");
 const {
   logErrors,
   wrapErrors,
@@ -18,6 +19,7 @@ const {
 
 // app
 const app = express();
+const port = config.port;
 
 // middlewares
 app.use(cors());
@@ -60,6 +62,6 @@ app.use(clientErrorHandler);
 app.use(errorHandler);
 
 // server
-const server = app.listen(3000, () => {
+const server = app.listen(port, () => {
   debug(`Listening http://localhost:${server.address().port}`);
 });
